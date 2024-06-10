@@ -61,33 +61,15 @@ class TelaInicial extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              Container(
-                                width: 200,
-                                child: TextField(
-                                    style: TextStyle(color: Colors.white),
-                                    decoration: InputDecoration(
-                                      hintText: 'Buscar filmes...',
-                                      hintStyle: TextStyle(
-                                          color: Colors.white.withOpacity(0.4)),
-                                      prefixIcon: Icon(Icons.search,
-                                          color: Colors.white.withOpacity(0.4)),
-                                    ),
-                                    onChanged: (String value) {
-                                      textoBusca = value;
-                                    }),
-                              ),
-                              SizedBox(height: 20),
                               ElevatedButton(
                                 onPressed: () {
-                                  if (textoBusca.isNotEmpty) {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            AvaliarFilme(data: textoBusca),
+                                            AvaliarFilme(),
                                       ),
-                                    );
-                                  }
+                                    );                                  
                                 },
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all<

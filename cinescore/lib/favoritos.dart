@@ -188,7 +188,7 @@ class _FavoritosState extends State<Favoritos> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        AvaliarFilme(data: 'Filmes Avaliados')),
+                                        AvaliarFilme()),
                               );
                             },
                             icon: Column(

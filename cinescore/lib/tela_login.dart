@@ -1,3 +1,4 @@
+import 'package:cinescore/cadastrar.dart';
 import 'package:flutter/material.dart';
 import 'package:cinescore/background_image.dart';
 import 'package:cinescore/logo_widget.dart';
@@ -12,17 +13,18 @@ class _TelaLoginState extends State<TelaLogin> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  late final String userName;
+  late final String userPassword;
+
   bool _isValid = true;
 
   void _login() {
-    const String validUsername = 'leo';
-    const String validPassword = 'senhaleo';
 
-    String enteredUsername = _usernameController.text;
-    String enteredPassword = _passwordController.text;
+    String enteredUsername = 'leo';
+    String enteredPassword = 'senhaleo';
 
-    if (enteredUsername == validUsername && enteredPassword == validPassword) {
-      Navigator.pushReplacement(
+    if (enteredUsername == _usernameController.text && enteredPassword == _passwordController.text) {
+      Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => TelaInicial(username: enteredUsername),
@@ -123,6 +125,34 @@ class _TelaLoginState extends State<TelaLogin> {
                         'Usuário ou senha inválidos',
                         style: TextStyle(color: Colors.red),
                       ),
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                        onPressed: () {Navigator.push(
+                          context, 
+                          MaterialPageRoute(builder: (context) => TelaCadastrar()
+                          )
+                        );
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            Color.fromARGB(255, 238, 227, 128)),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(color: Colors.red, width: 2.0),
+                            ),
+                          ),
+                        ),
+                          child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 14),
+                          child: Text(
+                            'Cadastrar',
+                            style: TextStyle(fontSize: 16, color: Colors.red),
+                          ),
+                        ),
+                      )
                   ],
                 ),
               ),

@@ -1,11 +1,22 @@
+import 'dart:js_interop';
+
+import 'package:cinescore/favoritos.dart';
+import 'package:cinescore/tela_login.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cinescore/background_image.dart';
 import 'package:cinescore/logo_widget.dart';
 import 'package:cinescore/tela_inicial.dart';
+import 'package:flutter/widgets.dart';
 
 class AvaliarFilme extends StatefulWidget {
-  final String data;
-  AvaliarFilme({required this.data});
+  AvaliarFilme();
+
+  Filme novoFilme = Filme(
+        nomeFilme: '',
+        criticaFilme: '',
+        quantidadeEstrelas: 0,
+      );
 
   @override
   _DetailScreenState createState() => _DetailScreenState();
@@ -13,7 +24,17 @@ class AvaliarFilme extends StatefulWidget {
 
 class _DetailScreenState extends State<AvaliarFilme> {
   int _rating = 0;
+
+  bool _isValid = true;
+
+  final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _criticaController = TextEditingController();
+  
+  get username => this.username;
+
+  final List<Filme> filmes = [];
+
+  late String nomeFilme;
 
   void _setRating(int rating) {
     setState(() {
@@ -23,9 +44,32 @@ class _DetailScreenState extends State<AvaliarFilme> {
 
   void _avaliar() {
     String critica = _criticaController.text;
-    // falta a lógica para enviar a crítica e a avaliação
-    print('Crítica: $critica');
-    print('Avaliação: $_rating estrelas');
+    String nomeFilme = _nomeController.text;
+
+    if(critica.isNotEmpty && _rating > 0){
+      Filme novoFilme = Filme(
+          nomeFilme: nomeFilme,
+          criticaFilme: critica,
+          quantidadeEstrelas: _rating,
+        );
+        setState(() {
+          filmes.add(novoFilme);
+        });
+
+      _criticaController.clear();
+      _nomeController.clear();
+
+      setState(() {
+        _rating = 0;
+      });
+
+      _isValid = true;
+
+    } else {
+      setState(() {
+        _isValid = false;
+      });
+    }
   }
 
   @override
@@ -58,13 +102,22 @@ class _DetailScreenState extends State<AvaliarFilme> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                      widget.data,
-                      style: TextStyle(
-                        fontSize: 45,
-                        color: Color.fromARGB(255, 238, 227, 128),
+                    Container(
+                      width: 250,
+                      child: TextField(
+                        controller: _nomeController,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Inserir filme...',
+                          hintStyle: TextStyle(
+                            color: Colors.white.withOpacity(0.3),
+                          ),
+                        ),
                       ),
                     ),
+                    SizedBox(height: 10),
                     Text(
                       'Sua Crítica:',
                       style: TextStyle(
@@ -160,6 +213,14 @@ class _DetailScreenState extends State<AvaliarFilme> {
                               ),
                             ),
                           ),
+                          if(!_isValid)
+                             Text(
+                              'Por favor, preencha todos os campos.',
+                              style: TextStyle(color: Colors.red),
+                             ),
+                          
+                          SizedBox(height: 20),
+                          _buildFilmeList()
                         ],
                       ),
                     ),
@@ -183,7 +244,7 @@ class _DetailScreenState extends State<AvaliarFilme> {
                         children: [
                           IconButton(
                             onPressed: () {
-                              // botão voltar, ainda preciso adicionar a funcionalidade
+                              Navigator.pop(context);
                             },
                             icon: Column(
                               children: [
@@ -206,7 +267,13 @@ class _DetailScreenState extends State<AvaliarFilme> {
                         children: [
                           IconButton(
                             onPressed: () {
-                              // botão de início, ainda preciso adicionar a funcionalidade
+                              Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            TelaLogin(),
+                                      ),
+                                    );
                             },
                             icon: Column(
                               children: [
@@ -229,7 +296,12 @@ class _DetailScreenState extends State<AvaliarFilme> {
                         children: [
                           IconButton(
                             onPressed: () {
-                              // botão de avaliações, ainda preciso adicionar a funcionalidade
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Favoritos(),
+                                ),
+                                );
                             },
                             icon: Column(
                               children: [
@@ -238,7 +310,7 @@ class _DetailScreenState extends State<AvaliarFilme> {
                                   color: Color.fromARGB(255, 238, 227, 128),
                                 ),
                                 Text(
-                                  'Avaliações',
+                                  'Favoritos',
                                   style: TextStyle(
                                       color:
                                           Color.fromARGB(255, 238, 227, 128)),
@@ -258,4 +330,74 @@ class _DetailScreenState extends State<AvaliarFilme> {
       ),
     );
   }
+
+ /* Widget _buildFilmeList() {
+    if (filmes.isEmpty) {
+      return Center(
+        child: Text('Nenhum filme avaliado ainda.'),
+      );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: filmes.map((filme) {
+        return Card(
+          color: Color.fromARGB(255, 238, 227, 128),
+          
+          margin: EdgeInsets.symmetric(vertical: 8),
+          child: ListTile(
+            title: Text(filme.nomeFilme),
+            textColor: Colors.red,
+            subtitle: Text(
+              'Crítica: ${filme.criticaFilme}\nAvaliação: ${filme.quantidadeEstrelas} estrelas',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+}*/
+
+  Widget _buildFilmeList() {
+    if (filmes.isEmpty) {
+      return Center(
+        child: Text('Nenhum filme avaliado ainda.'),
+      );
+    }
+    return SizedBox(
+      height: 200, // Altura desejada para a lista rolável
+      child: ListView.builder(
+        itemCount: filmes.length,
+        itemBuilder: (context, index) {
+          final filme = filmes[index];
+          return Card(
+            color: Color.fromARGB(255, 238, 227, 128),
+            margin: EdgeInsets.symmetric(vertical: 8),
+            child: ListTile(
+              title: Text(
+                filme.nomeFilme,
+                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(
+                'Crítica: ${filme.criticaFilme}\nAvaliação: ${filme.quantidadeEstrelas} estrelas',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class Filme {
+  final String nomeFilme;
+  final String criticaFilme;
+  final int quantidadeEstrelas;
+
+  Filme({
+    required this.nomeFilme,
+    required this.criticaFilme,
+    required this.quantidadeEstrelas
+  });
 }
