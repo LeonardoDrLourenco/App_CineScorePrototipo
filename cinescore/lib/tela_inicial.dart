@@ -163,57 +163,19 @@ class TelaInicial extends StatelessWidget {
             child: Container(
               width: double.infinity,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment:
+                    MainAxisAlignment.center, // Alinhe o botão ao centro
                 children: [
                   Column(
                     children: [
                       IconButton(
                         onPressed: () {
-                          // botão voltar, ainda preciso adicionar a funcionalidade
-                        },
-                        icon: Column(
-                          children: [
-                            Icon(
-                              Icons.arrow_back,
-                              color: Color.fromARGB(255, 238, 227, 128),
-                            ),
-                            Text(
-                              'Voltar',
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 238, 227, 128)),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          // botão de início, ainda preciso adicionar a funcionalidade
-                        },
-                        icon: Column(
-                          children: [
-                            Icon(
-                              Icons.home,
-                              color: Color.fromARGB(255, 238, 227, 128),
-                            ),
-                            Text(
-                              'Início',
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 238, 227, 128)),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          // botão de sair, ainda preciso adicionar a funcionalidade
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TelaLogin()),
+                            (Route<dynamic> route) => false,
+                          );
                         },
                         icon: Column(
                           children: [

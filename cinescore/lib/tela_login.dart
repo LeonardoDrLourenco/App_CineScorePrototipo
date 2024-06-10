@@ -3,7 +3,6 @@ import 'package:cinescore/background_image.dart';
 import 'package:cinescore/logo_widget.dart';
 import 'package:cinescore/tela_inicial.dart';
 
-
 class TelaLogin extends StatefulWidget {
   @override
   _TelaLoginState createState() => _TelaLoginState();
