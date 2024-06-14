@@ -198,7 +198,7 @@ class _FavoritosState extends State<Favoritos> {
                                   color: Color.fromARGB(255, 238, 227, 128),
                                 ),
                                 Text(
-                                  'Filmes Avaliados',
+                                  'Avaliados',
                                   style: TextStyle(
                                       color:
                                           Color.fromARGB(255, 238, 227, 128)),
